@@ -1,3 +1,3 @@
 @echo off
 
-E:\Python_Project\DISCORD_SERVER\venv\Scripts\python.exe E:\Python_Project\DISCORD_SERVER\py_bot.py
+E:\Python_Project\discord_bot\venv\Scripts\python.exe E:\Python_Project\discord_bot\py_bot.py
