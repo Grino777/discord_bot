@@ -48,23 +48,34 @@ def main():
         """Очистка чата на n сообщений ( по умолчанию 100 )."""
         await ctx.channel.purge(limit=amount + 1)
 
-    # @client.command(pass_context=True)
-    # async def kick(ctx, member: discord.Member, *, reason=None):
-    #     channel = client.get_channel(1041795071026139256)
-    #     author_roles_id = ctx.author.roles
-    #     for i in author_roles_id:
-    #         if i.id in [config.GM_ID, config.FRIEND_ID]:
-    #             await ctx.channel.purge(limit=1)
-    #             await ctx.send('+')
-    #             # await member.kick(reason=reason)
-    #             # await channel.send(f'Кто: {ctx.author}, кого: {member}')
-    #             # await ctx.send(f'Кто: {ctx.author}, кого: {member.mention}')
+    @client.command(pass_context=True)
+    async def kick(ctx, member: discord.Member, *, reason=None):
+        channel = client.get_channel(1041795071026139256)
+        author_roles_id = ctx.author.roles
+        for i in author_roles_id:
+            if i.id in [config.GM_ROLE_ID, config.FRIEND_ROLE_ID]:
+                # await ctx.channel.purge(limit=1)
+                await member.kick(reason=reason)
+                await channel.send(f'Кто: {ctx.author}, кого: {member}')
+            else:
+                await channel.send(f'{ctx.author} недостаточно прав для удаления {member}!')
 
     @client.command(pass_context=True)
-    @commands.has_permissions(administrator=True)
-    async def clear_msg_by_id(ctx, id):
-        """Удаление сообщений определенного пользователя на канале"""
-        ...
+    async def ban(ctx, member: discord.Member, *, reason=None):
+        channel_for_ban_logs = discord.utils.get(1042106711483351050)
+        author_roles_id = ctx.author.roles
+        for i in author_roles_id:
+            if i.id in [config.GM_ROLE_ID, config.FRIEND_ROLE_ID]:
+                await member.ban(reason=reason)
+                await channel_for_ban_logs.send(f'Кто: {ctx.author}, кого: {member}')
+            else:
+                await channel_for_ban_logs.send(f'{ctx.author} недостаточно прав для бана {member}!')
+
+    # @client.command(pass_context=True)
+    # @commands.has_permissions(administrator=True)
+    # async def clear_msg_by_id(ctx, id):
+    #     """Удаление сообщений определенного пользователя на канале"""
+    #     ...
 
     # Сonnect
     client.run(config.TOKEN)
